@@ -1,21 +1,47 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react'
+import { View, Text, TextInput, TouchableOpacity, Button } from 'react-native'
 
 export default function App() {
+
+  // Hooks - useState
+  const [produto, setProduto] = useState('')
+  const [produtos, setProdutos] = useState([])
+
+  //SPREAD JS
+  function handleAdicionarProduto() {
+    setProdutos(vetorVelho => [...vetorVelho, produto])
+    setProduto('')
+  }
+
+  function handleRemoverProduto(prodRemover) {
+    setProdutos(vetorVelho => vetorVelho.filter(prod => prod !== prodRemover))
+  }
+
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View>
+
+
+      <Text>Lista de Compras</Text>
+      <TextInput placeholder="Digite o produto!" value={produto} onChangeText={setProduto} ></TextInput>
+
+      <Button title="Adicionar" onPress={handleAdicionarProduto} onClick></Button>
+
+      <View>
+
+        {
+
+          produtos.map(pro => (
+            <View key={pro} style={{ flexDirection: 'row' }}>
+              <Text>{pro}</Text>
+              <Button title="x" onPress={() => handleRemoverProduto(pro)}></Button>
+            </View>
+          )
+          )
+        }
+
+      </View>
+
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
